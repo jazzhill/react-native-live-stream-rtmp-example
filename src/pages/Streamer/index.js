@@ -19,6 +19,7 @@ import MessagesList from '../../components/MessagesList/MessagesList';
 import FloatingHearts from '../../components/FloatingHearts';
 import { RTMP_SERVER } from '../../config';
 import Logger from '../../utils/logger';
+import md5 from "react-native-md5"
 
 export default class Streamer extends React.Component {
   constructor(props) {
@@ -182,7 +183,15 @@ export default class Streamer extends React.Component {
     const { route } = this.props;
     const { currentLiveStatus, countHeart } = this.state;
     const userName = get(route, 'params.userName', '');
-    const outputUrl = `${RTMP_SERVER}/live/${userName}`;
+    const hotKey ="9fe3579d19b5084912784e85177c455f";
+    const txtime = parseInt((new Date()).getTime() / 1000 + 36000).toString(16);
+   
+    let secret = hotKey + userName + txtime;
+    const txSecret = md5.hex_md5(secret);
+    
+    const outputUrl = `${RTMP_SERVER}/live/${userName}?txSecret=${txSecret}&txTime=${txtime}`;
+    //const conout = "rtmp://110002.livepush.myqcloud.com/live/Test202?txSecret=36f4c35762f35145e715f492028ad100&txTime=5F461680"
+    console.log(outputUrl);
     return (
       <SafeAreaView style={styles.container}>
         <NodeCameraView

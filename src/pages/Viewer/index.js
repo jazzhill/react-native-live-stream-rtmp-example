@@ -10,7 +10,7 @@ import FloatingHearts from '../../components/FloatingHearts';
 import ChatInputGroup from '../../components/ChatInputGroup';
 import MessagesList from '../../components/MessagesList/MessagesList';
 import { LIVE_STATUS } from '../../utils/constants';
-import { RTMP_SERVER } from '../../config';
+import { RTMP_PLAY_SERVER } from '../../config';
 
 export default class Viewer extends Component {
   constructor(props) {
@@ -56,11 +56,11 @@ export default class Viewer extends Component {
           })(i, this);
         }
       });
-      const inputUrl = `${RTMP_SERVER}/live/${this.roomName}/replayFor${this.userName}`;
+      const inputUrl = `${RTMP_PLAY_SERVER}/live/${this.roomName}`;//replayFor${this.userName}`;
       this.setState({ inputUrl });
     } else {
       this.setState({
-        inputUrl: `${RTMP_SERVER}/live/${this.roomName}`,
+        inputUrl: `${RTMP_PLAY_SERVER}/live/${this.roomName}`,
         messages: this.messages,
       });
       SocketManager.instance.emitJoinRoom({
@@ -162,6 +162,7 @@ export default class Viewer extends Component {
 
   renderNodePlayerView = () => {
     const { inputUrl } = this.state;
+    console.log(inputUrl)
     if (!inputUrl) return null;
     return (
       <NodePlayerView
